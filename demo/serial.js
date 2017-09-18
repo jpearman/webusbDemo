@@ -15,6 +15,7 @@ var serial = {};
       { 'vendorId': 0x2888, 'productId': 0x0003 },
       { 'vendorId': 0x2888, 'productId': 0x0501 },
       { 'vendorId': 0x2888, 'productId': 0x0507 },
+      { 'vendorId': 0x2889, 'productId': 0x0501 },
     ];
     return navigator.usb.requestDevice({ 'filters': filters }).then(
       device => new serial.Port(device)
@@ -35,7 +36,8 @@ var serial = {};
         })
         .then(() => {
           console.log('configuration selected');
-          return this.device_.claimInterface(1);
+          console.log('try to claim interface 4');
+          return this.device_.claimInterface(4);
         })
         .then(() => {
             console.log('Interface claimed');
