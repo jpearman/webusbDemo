@@ -36,8 +36,8 @@ var serial = {};
         })
         .then(() => {
           console.log('configuration selected');
-          console.log('try to claim interface 4');
-          return this.device_.claimInterface(4);
+          console.log('try to claim interface 6');
+          return this.device_.claimInterface(6);
         })
         .then(() => {
             console.log('Interface claimed');
