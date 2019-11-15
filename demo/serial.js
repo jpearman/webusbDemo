@@ -1,5 +1,6 @@
 var serial = {};
 
+
 (function() {
   'use strict';
 
@@ -27,20 +28,38 @@ var serial = {};
   };
 
   serial.Port.prototype.connect = function() {
+    let readLoop = () => {
+      this.device_.transferIn(7, 512).then(result => {
+        this.onReceive(result.data);
+        readLoop();
+      }, error => {
+        this.onReceiveError(error);
+      });
+    };
 
     return this.device_.open()
         .then(() => {
-          if (this.device_.configuration === null) {
+          //if (this.device_.configuration === null) {
             return this.device_.selectConfiguration(1);
-          }
+          //}
+        })
+        .then(() => {
+ //         return this.device_.reset();
         })
         .then(() => {
           console.log('configuration selected');
-          console.log('try to claim interface 6');
-          return this.device_.claimInterface(6);
+          console.log('try to claim interface 4');
+            return this.device_.claimInterface(4);
+      })
+        .then(() => {
+   //         return this.device_.selectAlternateInterface(0, 1);
         })
         .then(() => {
             console.log('Interface claimed');
+            readLoop();
+        })
+        .catch((err) => {
+            console.log(err);
         });
   };
 
